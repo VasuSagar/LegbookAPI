@@ -10,6 +10,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
+//@CrossOrigin(origins = "http://localhost:4200")
+@CrossOrigin(origins = "http://legbook.neonsolutions.xyz")
 @RequestMapping("/api/auth/v1")
 @AllArgsConstructor
 public class AuthController {
@@ -22,7 +24,7 @@ public class AuthController {
         if(authService.registerUser(registerRequest))
         {
             //if user registration is successful
-            return new ResponseEntity<>("User Registration successful", HttpStatus.OK);
+            return new ResponseEntity<>(HttpStatus.OK);
         }
         else
         {
@@ -39,8 +41,7 @@ public class AuthController {
     }
 
     @PostMapping("/login")
-    public AuthenticationResponse login(@RequestBody LoginRequest loginRequest)
-    {
-       return authService.login(loginRequest);
+    public AuthenticationResponse login(@RequestBody LoginRequest loginRequest) throws Exception {
+        return authService.login(loginRequest);
     }
 }

@@ -1,4 +1,4 @@
-package com.itm.legbook.com.itm.legbook.model;
+package com.itm.legbook.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -6,19 +6,19 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.time.Instant;
 
-@Entity
 @Data
+@Entity
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class VerificationToken {
+public class Image {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long tokenId;
-    private String token;
-    @OneToOne(fetch = FetchType.LAZY)
-    private User user;
-    private Instant expiryDate;
+    Long imgId;
+
+    @Lob
+    byte[] content;
+
+    String name;
 }

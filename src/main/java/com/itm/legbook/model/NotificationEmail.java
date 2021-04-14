@@ -1,4 +1,4 @@
-package com.itm.legbook.com.itm.legbook.model;
+package com.itm.legbook.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

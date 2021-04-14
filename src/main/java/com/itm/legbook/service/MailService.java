@@ -1,6 +1,6 @@
 package com.itm.legbook.service;
 
-import com.itm.legbook.com.itm.legbook.model.NotificationEmail;
+import com.itm.legbook.model.NotificationEmail;
 import com.itm.legbook.exception.LegBookException;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

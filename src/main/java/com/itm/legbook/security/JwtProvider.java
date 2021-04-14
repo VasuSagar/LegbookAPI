@@ -12,6 +12,7 @@ import java.io.InputStream;
 import java.security.*;
 import java.security.cert.CertificateException;
 
+import static io.jsonwebtoken.Jwts.parser;
 import static io.jsonwebtoken.Jwts.parserBuilder;
 
 @Service
@@ -32,7 +33,7 @@ public class JwtProvider {
 
     public String generateToken(Authentication authentication)
     {
-        User principal=(User)authentication.getPrincipal();
+        org.springframework.security.core.userdetails.User principal=(org.springframework.security.core.userdetails.User)authentication.getPrincipal();
 
         return Jwts.builder()
                 .setSubject(principal.getUsername())
@@ -64,7 +65,8 @@ public class JwtProvider {
         }
     }
 
-    public String getUsernameFromJwt(String token) {
+    public String getEmailFromToken(String token)
+    {
         Claims claims= parserBuilder().setSigningKey(getPublicKey()).build().parseClaimsJws(token).getBody();
         return claims.getSubject();
     }

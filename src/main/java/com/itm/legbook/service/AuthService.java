@@ -1,8 +1,8 @@
 package com.itm.legbook.service;
 
-import com.itm.legbook.com.itm.legbook.model.NotificationEmail;
-import com.itm.legbook.com.itm.legbook.model.User;
-import com.itm.legbook.com.itm.legbook.model.VerificationToken;
+import com.itm.legbook.model.NotificationEmail;
+import com.itm.legbook.model.User;
+import com.itm.legbook.model.VerificationToken;
 import com.itm.legbook.dto.AuthenticationResponse;
 import com.itm.legbook.dto.LoginRequest;
 import com.itm.legbook.dto.RegisterRequest;
@@ -15,6 +15,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -91,7 +92,6 @@ public class AuthService {
        fetchUserAndEnable(verificationToken.get());
     }
 
-    @Transactional
     private void fetchUserAndEnable(VerificationToken verificationToken)
     {
         String email=verificationToken.getUser().getEmail();
@@ -100,11 +100,19 @@ public class AuthService {
         userRepositroy.save(user);
     }
 
-    public AuthenticationResponse login(LoginRequest loginRequest)
+    public AuthenticationResponse login(LoginRequest loginRequest) throws Exception
     {
         Authentication authenticate=authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(loginRequest.getEmail(), loginRequest.getPassword()));
         SecurityContextHolder.getContext().setAuthentication(authenticate);
         String token=jwtProvider.generateToken(authenticate);
         return new AuthenticationResponse(token, loginRequest.getEmail());
+    }
+
+    @Transactional(readOnly = true)
+    public User getCurrentUser() {
+        org.springframework.security.core.userdetails.User principal = (org.springframework.security.core.userdetails.User) SecurityContextHolder.
+                getContext().getAuthentication().getPrincipal();
+        return userRepositroy.findByEmail(principal.getUsername())
+                .orElseThrow(() -> new UsernameNotFoundException("Email name not found - " + principal.getUsername()));
     }
 }

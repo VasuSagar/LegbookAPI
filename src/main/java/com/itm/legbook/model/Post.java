@@ -1,4 +1,4 @@
-package com.itm.legbook.com.itm.legbook.model;
+package com.itm.legbook.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -7,7 +7,6 @@ import lombok.NoArgsConstructor;
 import org.springframework.lang.Nullable;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotBlank;
 import java.time.Instant;
 import java.util.List;
 
