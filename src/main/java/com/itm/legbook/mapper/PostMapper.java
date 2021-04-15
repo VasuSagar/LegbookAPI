@@ -16,6 +16,7 @@ public interface PostMapper
     @Mapping(target = "user",source = "user")
     @Mapping(target = "description",source = "postRequest.description")
     @Mapping(target = "createdDate",expression = "java(java.time.Instant.now())")
+    @Mapping(target = "likeCount",constant = "0")
     Post map(PostRequest postRequest,User user);
 
     @Mapping(target = "postId",source = "postId")

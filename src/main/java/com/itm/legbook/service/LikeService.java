@@ -12,6 +12,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 
+
+
+
 @Service
 @AllArgsConstructor
 public class LikeService
@@ -19,6 +22,8 @@ public class LikeService
     private final LikeRepository likeRepository;
     private final PostRepository postRepository;
     private final AuthService authService;
+
+
 
     @Transactional
     public void assignLike(LikeDto likeDto)
@@ -31,13 +36,17 @@ public class LikeService
 //            throw new LegBookException("You already liked this post by userId:"+authService.getCurrentUser().getUserId());
 //        }
         //if user has already liked this post
-        if(likeByPostAndUser.isPresent() && likeByPostAndUser.get().getUser().getUserId().equals(authService.getCurrentUser().getUserId()))
+        if(likeByPostAndUser.isPresent())
         {
             System.out.println("IF");
             //throw new LegBookException("You already liked this post by userId:"+authService.getCurrentUser().getUserId());
 
             //decrease like by 1
             post.setLikeCount(post.getLikeCount()-1);
+
+            //remove existing like entry from like table
+            likeRepository.deleteLikeByUserIdAndPostId(likeByPostAndUser.get().getUser().getUserId(),likeByPostAndUser.get().getPost().getPostId());
+
         }
         else
             {
@@ -46,9 +55,8 @@ public class LikeService
             //if user has not liked the post
             //increase like by 1
             post.setLikeCount(post.getLikeCount()+1);
+            likeRepository.save(mapToLike(likeDto,post));
         }
-
-        likeRepository.save(mapToLike(likeDto,post));
         postRepository.save(post);
 
     }

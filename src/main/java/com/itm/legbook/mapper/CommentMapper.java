@@ -21,4 +21,12 @@ public interface CommentMapper
     @Mapping(target = "userName",expression = "java(comment.getUser().getFirstName() + \" \" + comment.getUser().getLastName())")
     @Mapping(target = "userId",expression = "java(comment.getUser().getUserId())")
     CommentRequest mapToDto(Comment comment);
+
+    @Mapping(target = "commentId",source = "commentRequest.commentId")
+    @Mapping(target = "text",source = "commentRequest.text")
+    @Mapping(target = "createdDate",source = "commentRequest.createdDate")
+    @Mapping(target = "postId",source = "post.postId")
+    @Mapping(target = "userId",expression = "java(commentRequest.getUser().getUserId())")
+    @Mapping(target = "userName",expression = "java(commentRequest.getUser().getFirstName() + \" \" + commentRequest.getUser().getLastName())")
+    CommentRequest mapFinal(Comment commentRequest, Post post);
 }
