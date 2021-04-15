@@ -13,7 +13,7 @@ import java.util.List;
 
 @RestController
 //@CrossOrigin(origins = "http://localhost:4200")
-@CrossOrigin(origins = "http://legbook.neonsolutions.xyz")
+@CrossOrigin(origins = "http://cs.neonsolutions.xyz")
 @RequestMapping("/api/posts/v1")
 @AllArgsConstructor
 public class PostController
