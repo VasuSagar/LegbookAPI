@@ -19,6 +19,7 @@ import java.util.Optional;
 @AllArgsConstructor
 public class LikeService
 {
+
     private final LikeRepository likeRepository;
     private final PostRepository postRepository;
     private final AuthService authService;
@@ -26,7 +27,7 @@ public class LikeService
 
 
     @Transactional
-    public void assignLike(LikeDto likeDto)
+    public int assignLike(LikeDto likeDto)
     {
         Post post=postRepository.findById(likeDto.getPostId()).orElseThrow(()->new LegBookException("post not found with id:"+likeDto.getPostId()));
         Optional<Like> likeByPostAndUser=likeRepository.findTopByPostAndUser(post,authService.getCurrentUser());
@@ -46,7 +47,9 @@ public class LikeService
 
             //remove existing like entry from like table
             likeRepository.deleteLikeByUserIdAndPostId(likeByPostAndUser.get().getUser().getUserId(),likeByPostAndUser.get().getPost().getPostId());
-
+            postRepository.save(post);
+            //return 0-for like Added 1-for like removed
+            return 1;
         }
         else
             {
@@ -56,8 +59,10 @@ public class LikeService
             //increase like by 1
             post.setLikeCount(post.getLikeCount()+1);
             likeRepository.save(mapToLike(likeDto,post));
+            postRepository.save(post);
+            return 0;
         }
-        postRepository.save(post);
+
 
     }
 

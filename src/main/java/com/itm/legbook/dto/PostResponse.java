@@ -1,5 +1,6 @@
 package com.itm.legbook.dto;
 
+import com.itm.legbook.model.Like;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -20,4 +21,5 @@ public class PostResponse
     private String userName;
     private Integer likeCount;
     private Integer commentCount;
+    private Integer isLikedByMe;
 }

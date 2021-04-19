@@ -8,10 +8,11 @@ import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
 
 @RestController
-//@CrossOrigin(origins = "http://localhost:4200")
-@CrossOrigin(origins = "http://cs.neonsolutions.xyz")
+@CrossOrigin(origins = "http://localhost:4200")
+//@CrossOrigin(origins = "http://cs.neonsolutions.xyz")
 @RequestMapping("/api/auth/v1")
 @AllArgsConstructor
 public class AuthController {
@@ -25,6 +26,7 @@ public class AuthController {
         {
             //if user registration is successful
             return new ResponseEntity<>(HttpStatus.OK);
+
         }
         else
         {

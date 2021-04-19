@@ -19,10 +19,11 @@ public interface PostMapper
     @Mapping(target = "likeCount",constant = "0")
     Post map(PostRequest postRequest,User user);
 
-    @Mapping(target = "postId",source = "postId")
-    @Mapping(target = "description",source = "description")
-    @Mapping(target = "userId",source = "user.userId")
-    @Mapping(target = "createdDate",source = "createdDate")
+    @Mapping(target = "postId",source = "post.postId")
+    @Mapping(target = "description",source = "post.description")
+    @Mapping(target = "userId",source = "post.user.userId")
+    @Mapping(target = "createdDate",source = "post.createdDate")
     @Mapping(target = "userName",expression = "java(post.getUser().getFirstName() + \" \" + post.getUser().getLastName())")
-    PostResponse mapToDto(Post post);
+    @Mapping(target = "isLikedByMe",source = "count")
+    PostResponse mapToDto(Post post,int count);
 }

@@ -8,8 +8,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-//@CrossOrigin(origins = "http://localhost:4200")
-@CrossOrigin(origins = "http://cs.neonsolutions.xyz")
+@CrossOrigin(origins = "http://localhost:4200")
+//@CrossOrigin(origins = "http://cs.neonsolutions.xyz")
 @RequestMapping("/api/likes")
 @AllArgsConstructor
 public class LikeController
@@ -17,9 +17,9 @@ public class LikeController
     private final LikeService likeService;
 
     @PostMapping
-    public ResponseEntity<Void> assginLike(@RequestBody LikeDto likeDto)
+    public ResponseEntity<Integer> assginLike(@RequestBody LikeDto likeDto)
     {
-        likeService.assignLike(likeDto);
-        return new ResponseEntity<>(HttpStatus.OK);
+        Integer integer=likeService.assignLike(likeDto);
+        return new ResponseEntity<>(integer,HttpStatus.OK);
     }
 }

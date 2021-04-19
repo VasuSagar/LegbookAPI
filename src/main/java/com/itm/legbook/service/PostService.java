@@ -4,8 +4,10 @@ import com.itm.legbook.dto.PostRequest;
 import com.itm.legbook.dto.PostResponse;
 import com.itm.legbook.exception.LegBookException;
 import com.itm.legbook.mapper.PostMapper;
+import com.itm.legbook.model.Like;
 import com.itm.legbook.model.Post;
 import com.itm.legbook.model.User;
+import com.itm.legbook.repository.LikeRepository;
 import com.itm.legbook.repository.PostRepository;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -37,12 +39,20 @@ public class PostService {
     public PostResponse getPost(Long postId)
     {
         Post post=postRepository.findById(postId).orElseThrow(()->new LegBookException(postId.toString()));
-        return postMapper.mapToDto(post);
+        return postMapper.mapToDto(post,1);
     }
 
-    @Transactional(readOnly = true)
+    @Transactional(readOnly = false)
     public List<PostResponse> getAllPosts()
-    {
-        return postRepository.findAll().stream().map(postMapper::mapToDto).collect(Collectors.toList());
+    {   User user=authService.getCurrentUser();
+
+        //List<PostResponse> postResponses=postRepository.findAll().stream().map(postMapper::mapToDto).collect(Collectors.toList());
+
+        //postResponses.stream().filter(data->);
+        return postRepository.findAll().stream().map(postm->postMapper.mapToDto(postm, postRepository.isPostLikedByMe(postm.getPostId(),user.getUserId()))).collect(Collectors.toList());
+
+        //return postResponses;
+
+
     }
 }
