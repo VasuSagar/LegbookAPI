@@ -8,8 +8,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@CrossOrigin(origins = "http://localhost:4200")
-//@CrossOrigin(origins = "http://cs.neonsolutions.xyz")
+//@CrossOrigin(origins = "http://localhost:4200")
+@CrossOrigin(origins = "http://cs.neonsolutions.xyz")
 @RequestMapping("/api/likes")
 @AllArgsConstructor
 public class LikeController

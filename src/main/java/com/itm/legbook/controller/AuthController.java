@@ -4,6 +4,7 @@ import com.itm.legbook.dto.AuthenticationResponse;
 import com.itm.legbook.dto.LoginRequest;
 import com.itm.legbook.dto.RegisterRequest;
 import com.itm.legbook.service.AuthService;
+import com.itm.legbook.service.ChatService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -11,13 +12,14 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 @RestController
-@CrossOrigin(origins = "http://localhost:4200")
-//@CrossOrigin(origins = "http://cs.neonsolutions.xyz")
+//@CrossOrigin(origins = "http://localhost:4200")
+@CrossOrigin(origins = "http://cs.neonsolutions.xyz")
 @RequestMapping("/api/auth/v1")
 @AllArgsConstructor
 public class AuthController {
 
     private final AuthService authService;
+    private final ChatService chatService;
 
     @PostMapping("/signUp")
     public ResponseEntity<String> signUp(@RequestBody RegisterRequest registerRequest)
@@ -46,4 +48,11 @@ public class AuthController {
     public AuthenticationResponse login(@RequestBody LoginRequest loginRequest) throws Exception {
         return authService.login(loginRequest);
     }
+
+    @GetMapping("/getUserDetails")
+    public ResponseEntity<Long> getUserDetail() throws Exception {
+        return ResponseEntity.status(HttpStatus.OK).body(authService.getCurrentUser().getUserId());
+    }
+
+
 }

@@ -1,5 +1,8 @@
 package com.itm.legbook.service;
 
+import com.itm.legbook.dto.UserResponse;
+import com.itm.legbook.mapper.PostMapper;
+import com.itm.legbook.mapper.UserMapper;
 import com.itm.legbook.model.NotificationEmail;
 import com.itm.legbook.model.User;
 import com.itm.legbook.model.VerificationToken;
@@ -21,8 +24,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.Instant;
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
@@ -40,6 +45,8 @@ public class AuthService {
     private final AuthenticationManager authenticationManager;
 
     private final JwtProvider jwtProvider;
+
+    private final UserMapper userMapper;
 
     @Transactional
     public boolean registerUser(RegisterRequest registerRequest)
@@ -114,5 +121,12 @@ public class AuthService {
                 getContext().getAuthentication().getPrincipal();
         return userRepositroy.findByEmail(principal.getUsername())
                 .orElseThrow(() -> new UsernameNotFoundException("Email name not found - " + principal.getUsername()));
+    }
+
+    public List<UserResponse> getAllUsers() {
+        User user =getCurrentUser();
+        Long userId=user.getUserId();
+        return userRepositroy.getAllUsers(userId).stream().map(userMapper::mapToDto).collect(Collectors.toList());
+
     }
 }

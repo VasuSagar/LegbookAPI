@@ -34,17 +34,23 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     public void configure(HttpSecurity httpSecurity) throws  Exception
     {
 
-//        httpSecurity.csrf().disable()
-//                            .authorizeRequests()
-//                            .antMatchers("/")
-//                            .permitAll();
-
+        //chat servuce is open without adding headers from angular
         httpSecurity.cors().and().csrf().disable().authorizeRequests()
                 .antMatchers("/api/auth/v1/**")
+                .permitAll()
+                .antMatchers("/chat/**")
                 .permitAll()
                 .antMatchers(HttpMethod.GET,"/api/posts/v1")
                 .permitAll()
                 .anyRequest().authenticated();
+
+
+//        httpSecurity.cors().and().csrf().disable().authorizeRequests()
+//                .antMatchers("/api/auth/v1/**")
+//                .permitAll()
+//                .antMatchers(HttpMethod.GET,"/api/posts/v1")
+//                .permitAll()
+//                .anyRequest().authenticated();
 
         httpSecurity.addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
     }
